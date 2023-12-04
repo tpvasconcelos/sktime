@@ -68,7 +68,6 @@ class _ProphetAdapter(BaseForecaster):
         self : returns an instance of self.
         """
         self._instantiate_model()
-        self._check_changepoints()
 
         # sets y_index_was_period_ and self.y_index_was_int_ flags
         # to remember the index type of y before conversion
@@ -299,21 +298,6 @@ class _ProphetAdapter(BaseForecaster):
         for name in ["delta", "beta"]:
             fitted_params[name] = self._forecaster.params[name][0]
         return fitted_params
-
-    def _check_changepoints(self):
-        """Check arguments for changepoints and assign related arguments.
-
-        Returns
-        -------
-        self
-        """
-        if self.changepoints is not None:
-            self.changepoints = pd.Series(pd.to_datetime(self.changepoints), name="ds")
-            self.n_changepoints = len(self.changepoints)
-            self.specified_changepoints = True
-        else:
-            self.specified_changepoints = False
-        return self
 
 
 def _merge_X(df, X):
