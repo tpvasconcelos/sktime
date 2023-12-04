@@ -2,7 +2,6 @@
 # copyright: sktime developers, BSD-3-Clause License (see LICENSE file)
 
 __all__ = [
-    "_ProphetAdapter",
     "_StatsModelsAdapter",
     "_TbatsAdapter",
     "_PmdArimaAdapter",
@@ -10,7 +9,6 @@ __all__ = [
     "_GeneralisedStatsForecastAdapter",
 ]
 
-from sktime.forecasting.base.adapters._fbprophet import _ProphetAdapter
 from sktime.forecasting.base.adapters._generalised_statsforecast import (
     _GeneralisedStatsForecastAdapter,
 )
