@@ -38,18 +38,13 @@ class _ProphetAdapter(BaseForecaster):
         """Coerce y.index to pd.DatetimeIndex, for use by prophet."""
         if y is None:
             return None
-        elif type(y.index) is pd.PeriodIndex:
+        elif isinstance(y.index, pd.PeriodIndex):
             y = y.copy()
             y.index = y.index.to_timestamp()
         elif pd.api.types.is_integer_dtype(y.index):
             y = self._convert_int_to_date(y)
         # else y is pd.DatetimeIndex as prophet expects, and needs no conversion
         return y
-
-    def _remember_y_input_index_type(self, y):
-        """Remember input type of y by setting attributes, for use in _fit."""
-        self.y_index_was_period_ = type(y.index) is pd.PeriodIndex
-        self.y_index_was_int_ = pd.api.types.is_integer_dtype(y.index)
 
     def _fit(self, y, X, fh):
         """Fit to training data.
@@ -69,9 +64,9 @@ class _ProphetAdapter(BaseForecaster):
         """
         self._instantiate_model()
 
-        # sets y_index_was_period_ and self.y_index_was_int_ flags
-        # to remember the index type of y before conversion
-        self._remember_y_input_index_type(y)
+        # Remember y's input type before conversion
+        self.y_index_was_period_ = isinstance(y.index, pd.PeriodIndex)
+        self.y_index_was_int_ = pd.api.types.is_integer_dtype(y.index)
 
         # various type input indices are converted to datetime
         # since facebook prophet can only deal with dates
